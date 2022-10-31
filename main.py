@@ -7,7 +7,6 @@ from torchvision.models import resnet18
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor, RichProgressBar
 import pytorch_lightning as pl
-import sys
 
 
 if __name__ == '__main__':
