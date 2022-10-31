@@ -1,10 +1,13 @@
 from dataloader import VeRiWildDataset, get_simple_transform
 from datamodule import VeRiWildDataModule
 from model_lit import LitClassifier
-from trainer import trainer
 
 from pathlib import Path
 from torchvision.models import resnet18
+from pytorch_lightning.loggers import WandbLogger
+from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor, RichProgressBar
+import pytorch_lightning as pl
+
 
 
 if __name__ == '__main__':
@@ -21,6 +24,21 @@ if __name__ == '__main__':
 
     model = LitClassifier(
         net=resnet18(num_classes=data_module.num_classes)
+    )
+
+    # wandb_logger = WandbLogger(project="VeRiWild")
+    # rich_progress = RichProgressBar()
+
+    lr_monitor = LearningRateMonitor(logging_interval='epoch')
+
+    trainer = pl.Trainer(
+        # check_val_every_n_epoch=5,
+        log_every_n_steps=10,
+        max_epochs=50,
+        # logger=wandb_logger,
+        # callbacks=[rich_progress, lr_monitor, checkpoint_callback],
+        callbacks=[lr_monitor],
+        # accelerator="gpu", devices=1
     )
 
     # Fit
