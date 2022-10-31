@@ -16,7 +16,7 @@ class VeRiWildDataModule(pl.LightningDataModule):
         train_transform: callable = None,
         test_transform: callable = None,
         batch_size: int = 8,
-        num_workers: int = 2,
+        num_workers: int = 16,
         pin_memory: bool = False,
     ):
         super().__init__()
