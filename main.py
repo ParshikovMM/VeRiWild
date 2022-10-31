@@ -1,4 +1,4 @@
-from dataloader import VeRiWildDataset, get_simple_transform
+from dataset import VeRiWildDataset, get_simple_transform
 from datamodule import VeRiWildDataModule
 from model_lit import LitClassifier
 
@@ -7,11 +7,11 @@ from torchvision.models import resnet18
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor, RichProgressBar
 import pytorch_lightning as pl
-
+import sys
 
 
 if __name__ == '__main__':
-    data_path = Path('/content/drive/MyDrive/VIT_REID/mini_data')
+    data_path = Path('/media/mikhail/data/veri_wild_preparation')
     data_module = VeRiWildDataModule(
         data_path=data_path,
         train_txt='train_list_start0.txt',
@@ -26,8 +26,8 @@ if __name__ == '__main__':
         net=resnet18(num_classes=data_module.num_classes)
     )
 
-    # wandb_logger = WandbLogger(project="VeRiWild")
-    # rich_progress = RichProgressBar()
+    wandb_logger = WandbLogger(project="VeRiWild")
+    rich_progress = RichProgressBar()
 
     lr_monitor = LearningRateMonitor(logging_interval='epoch')
 

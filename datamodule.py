@@ -1,4 +1,4 @@
-from dataloader import VeRiWildDataset
+from dataset import VeRiWildDataset
 
 import pytorch_lightning as pl
 from torch.utils.data import DataLoader

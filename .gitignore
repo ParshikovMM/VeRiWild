@@ -3,3 +3,9 @@ __pycache__
 venv/
 
 .idea/
+
+.wandb/
+wandb/
+
+.lightning_logs/
+lightning_logs/
