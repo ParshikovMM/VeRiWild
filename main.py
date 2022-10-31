@@ -11,7 +11,7 @@ import sys
 
 
 if __name__ == '__main__':
-    data_path = Path('/media/mikhail/data/veri_wild_preparation')
+    data_path = Path('/home/parshikov/data/VERI-Wild Dataset')  # /media/mikhail/data/veri_wild_preparation
     data_module = VeRiWildDataModule(
         data_path=data_path,
         train_txt='train_list_start0.txt',
@@ -32,13 +32,13 @@ if __name__ == '__main__':
     lr_monitor = LearningRateMonitor(logging_interval='epoch')
 
     trainer = pl.Trainer(
-        # check_val_every_n_epoch=5,
+        check_val_every_n_epoch=5,
         log_every_n_steps=10,
         max_epochs=50,
-        # logger=wandb_logger,
-        # callbacks=[rich_progress, lr_monitor, checkpoint_callback],
+        logger=wandb_logger,
+        #callbacks=[rich_progress, lr_monitor, checkpoint_callback],
         callbacks=[lr_monitor],
-        # accelerator="gpu", devices=1
+        accelerator="gpu", devices=1
     )
 
     # Fit
