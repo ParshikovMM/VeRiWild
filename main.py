@@ -19,7 +19,7 @@ if __name__ == '__main__':
         gallery_txt='test_3000_id.txt',
         train_transform=get_simple_transform(),
         test_transform=get_simple_transform(),
-        batch_size=8,
+        batch_size=64,
         num_workers=16,
     )
     data_module.setup()
