@@ -16,7 +16,7 @@ class VeRiWildDataModule(pl.LightningDataModule):
         train_transform: callable = None,
         test_transform: callable = None,
         batch_size: int = 8,
-        num_workers: int = 16,
+        num_workers: int = 2,
         pin_memory: bool = False,
     ):
         super().__init__()
@@ -95,4 +95,4 @@ class VeRiWildDataModule(pl.LightningDataModule):
             pin_memory=self.pin_memory,
             shuffle=False,
         )
-        return {'query': query, 'gallery': gallery}
+        return [query, gallery]

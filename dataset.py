@@ -3,6 +3,7 @@ from pathlib import Path
 import albumentations as albu
 import cv2
 from albumentations.pytorch import ToTensorV2
+from torch.utils.data import DataLoader
 
 
 class VeRiWildDataset():
@@ -22,7 +23,7 @@ class VeRiWildDataset():
         with open(self.data_path / 'train_test_split' / info_txt, "r") as f:
             for line in f.readlines():
                 vid = int(line.split('/')[0])
-                camid = int(line.split(' ')[1])
+                camid = int(line.split(' ')[2])
                 self.vids.add(vid)
                 self.camids.add(camid)
 
