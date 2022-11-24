@@ -2,6 +2,7 @@ from typing import Optional, Tuple
 import torch
 from torch import nn
 import numpy as np
+from torch.nn import Parameter, MultiheadAttention
 
 
 def split_heads(x: torch.Tensor, n_heads: int) -> torch.Tensor:
@@ -116,16 +117,16 @@ class HydraAttention(nn.Module):
         self.d_head = dim // n_heads
 
         # linear projections
-        self.W_Q = nn.Linear(in_features=dim, out_features=self.d_head)
-        self.W_K = nn.Linear(in_features=dim, out_features=self.d_head)
-        self.W_V = nn.Linear(in_features=dim, out_features=self.d_head)
+        self.W_Q = nn.Linear(in_features=dim, out_features=dim)
+        self.W_K = nn.Linear(in_features=dim, out_features=dim)
+        self.W_V = nn.Linear(in_features=dim, out_features=dim)
 
         # scaled dot-product attention
         scale = self.d_head ** 0.5  # scale factor
-        self.attention = ScaledDotProductAttention(scale=scale, dropout=dropout)
+        # self.attention = ScaledDotProductAttention(scale=scale, dropout=dropout)
 
         self.layer_norm = nn.LayerNorm(dim)
-        self.fc = nn.Linear(...)
+        # self.fc = nn.Linear(...)
 
         self.dropout = None if dropout is None else nn.Dropout(dropout)
 
@@ -148,7 +149,22 @@ class HydraAttention(nn.Module):
         att = q * kv
         att = att if self.dropout is None else self.dropout(att)
 
-        out = self.layer_norm(att)  # LayerNorm
+        # out = self.layer_norm(att)  # LayerNorm
 
-        return out
-    
+        return att
+
+
+if __name__ == "__main__":
+
+    attention = HydraAttention(dim=2, n_heads=2, dropout=0.2)
+    query = torch.rand(20, 2)
+
+    res = attention(query)
+    print(res[0].shape)
+    print(res[1].shape)
+
+    att = MultiheadAttention(embed_dim=2, num_heads=2, dropout=0.2)
+    res2 = attention(query)
+
+    print(res2[0].shape)
+    print(res2[1].shape)
