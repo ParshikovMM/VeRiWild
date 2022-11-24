@@ -7,7 +7,7 @@ def compute_cosine_distance(features, others):
     features = F.normalize(features, p=2, dim=1)
     others = F.normalize(others, p=2, dim=1)
     dist_m = 1 - torch.mm(features, others.t())
-    return dist_m.cpu().numpy()
+    return dist_m.detach().cpu().numpy()
 
 
 def eval_market1501(distmat, q_pids, g_pids, q_camids, g_camids, max_rank=50):

@@ -65,12 +65,12 @@ class LitClassifier(pl.LightningModule):
         query_list, gallery_list = validation_step_outputs
 
         q_emb = torch.cat([q['emb'] for q in query_list])
-        q_pid = torch.cat([q['pid'] for q in query_list]).cpu().numpy().astype(np.int32)
-        q_camid = torch.cat([q['camid'] for q in query_list]).cpu().numpy().astype(np.int32)
+        q_pid = torch.cat([q['pid'] for q in query_list]).detach().cpu().numpy()
+        q_camid = torch.cat([q['camid'] for q in query_list]).detach().cpu().numpy()
 
         g_emb = torch.cat([g['emb'] for g in gallery_list])
-        g_pid = torch.cat([g['pid'] for g in gallery_list]).cpu().numpy().astype(np.int32)
-        g_camid = torch.cat([g['camid'] for g in gallery_list]).cpu().numpy().astype(np.int32)
+        g_pid = torch.cat([g['pid'] for g in gallery_list]).detach().cpu().numpy()
+        g_camid = torch.cat([g['camid'] for g in gallery_list]).detach().cpu().numpy()
 
         distmat = compute_cosine_distance(q_emb, g_emb)
         cmc, all_AP, all_INP = eval_market1501(distmat, q_pid, g_pid, q_camid, g_camid)

@@ -8,10 +8,12 @@ from torchvision.models import resnet18
 from pytorch_lightning.loggers import WandbLogger
 from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor, RichProgressBar
 import pytorch_lightning as pl
+import configargparse
 
 
 if __name__ == '__main__':
-    data_path = Path('/home/parshikov/data/VERI-Wild Dataset')  # /media/mikhail/data/veri_wild_preparation / /home/parshikov/data/VERI-Wild Dataset
+
+    data_path = Path('/media/mikhail/data/veri_wild_preparation')  # /media/mikhail/data/veri_wild_preparation / /home/parshikov/data/VERI-Wild Dataset
     data_module = VeRiWildDataModule(
         data_path=data_path,
         train_txt='train_list_start0.txt',
@@ -19,8 +21,8 @@ if __name__ == '__main__':
         gallery_txt='test_3000_id.txt',
         train_transform=get_simple_transform(),
         test_transform=get_simple_transform(),
-        batch_size=64,
-        num_workers=16,
+        batch_size=5,
+        num_workers=3,
     )
     data_module.setup()
 
@@ -47,9 +49,11 @@ if __name__ == '__main__':
 
     trainer = pl.Trainer(
         num_sanity_val_steps=0,
+        limit_val_batches=0.1,
+        limit_train_batches=0.1,
         check_val_every_n_epoch=5,
         log_every_n_steps=10,
-        max_epochs=50,
+        max_epochs=5,
         logger=wandb_logger,
         callbacks=[rich_progress, lr_monitor],
         # callbacks=[lr_monitor],

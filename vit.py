@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import hydra_attention as ha
 
 
 class ImgPatches(nn.Module):
@@ -26,6 +27,7 @@ class AttentionBlock(nn.Module):
         self.layer_norm_1 = nn.LayerNorm(embed_dim)
         self.attn = nn.MultiheadAttention(embed_dim, num_heads,
                                           dropout=dropout)
+        # self.attn = ha.HydraAttention(embed_dim, num_heads, dropout=dropout)
         self.layer_norm_2 = nn.LayerNorm(embed_dim)
         self.linear = nn.Sequential(
             nn.Linear(embed_dim, hidden_dim),
